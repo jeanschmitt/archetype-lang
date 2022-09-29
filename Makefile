@@ -58,3 +58,9 @@ build-deps: _opam
 
 build-deps-dev: build-deps
 	opam install merlin ocp-indent why3.1.4.0 -y
+
+build-aarch64:
+	docker build -t archetype-builder-aarch64 .
+	$(eval container_id := $(shell docker create archetype-builder-aarch64))
+	docker cp "$(container_id):/archetype/_build/default/src/compiler.exe" ./archetype_aarch64
+	docker rm $(container_id)
